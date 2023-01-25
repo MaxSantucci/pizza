@@ -17,8 +17,8 @@ const Home = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    const order = setSort.sortProperty.includes('-') ? 'asc' : 'desc';
-    const sortBy = setSort.sortProperty.replace('-', '');
+    const sortBy = sort.sortProperty.replace('-', '');
+    const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
 
     fetch(
