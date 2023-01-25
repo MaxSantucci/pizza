@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const Categories = ({value, onChangeCategory}) => {
   const categories = ["All", "Meat", "Vegetarian", "Grill", "Spicy", "Сlosed"]
