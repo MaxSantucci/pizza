@@ -8,22 +8,41 @@ import Sort from '../components/Sort';
 const Home = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [categoryId, setCategoryId] = useState(0);
+  const [sort, setSort] = useState({
+    name: "popularity",
+    sortProperty: "rating"
+  });
 
   useEffect(() => {
-    fetch("https://63cc509f9b72d2a88e0b89c8.mockapi.io/items")
+    setIsLoading(true);
+
+    const order = setSort.sortProperty.includes('-') ? 'asc' : 'desc';
+    const sortBy = setSort.sortProperty.replace('-', '');
+    const category = categoryId > 0 ? `category=${categoryId}` : '';
+
+    fetch(
+      `https://63cc509f9b72d2a88e0b89c8.mockapi.io/items?${category}&sortBy=${sortBy}&order=${order}`,
+    )
       .then((res) => res.json())
       .then((arr) => {
         setItems(arr)
         setIsLoading(false)
       })
     window.scrollTo(0, 0)
-  }, [])
+  }, [categoryId, sort])
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
-        <Sort />
+        <Categories
+          value={categoryId}
+          onChangeCategory={(i) => setCategoryId(i)}
+        />
+        <Sort
+          value={sort}
+          onChangeSort={(i) => setSort(i)}
+        />
       </div>
       <h2 className="content__title">All pizzas:</h2>
       <div className="content__items">
