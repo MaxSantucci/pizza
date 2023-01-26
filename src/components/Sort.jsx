@@ -5,11 +5,11 @@ const Sort = ({value, onClickSort}) => {
 
   const list = [
     {name: "popularity(DESC)", sortProperty: "rating"}, 
-    {name: "popularity(ASC)", sortProperty: "rating"}, 
+    {name: "popularity(ASC)", sortProperty: "-rating"}, 
     {name: 'price(DESC)', sortProperty: "price"}, 
-    {name: 'price(ASC)', sortProperty: "price"}, 
+    {name: 'price(ASC)', sortProperty: "-price"}, 
     {name: "alphabet(DESC)", sortProperty: "title"},
-    {name: "alphabet(ASC)", sortProperty: "title"},
+    {name: "alphabet(ASC)", sortProperty: "-title"},
   ]
 
   const onSortedList = (i) => {
