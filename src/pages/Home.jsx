@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { SearchContext } from '../App';
 
 import Categories from '../components/Categories';
 import Pagination from '../components/Pagination';
@@ -6,7 +7,9 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Sort from '../components/Sort';
 
-const Home = ({ searchValue }) => {
+const Home = () => {
+  const { searchValue } = useContext(SearchContext);
+
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(0);
@@ -22,7 +25,7 @@ const Home = ({ searchValue }) => {
     const sortBy = sort.sortProperty.replace('-', '');
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
-    const search = searchValue ? `search=${searchValue}` : '';
+    const search = searchValue ? `&search=${searchValue}` : '';
 
     fetch(
       `https://63cc509f9b72d2a88e0b89c8.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`,
@@ -35,9 +38,9 @@ const Home = ({ searchValue }) => {
     window.scrollTo(0, 0)
   }, [categoryId, sort, searchValue, currentPage])
 
-  const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
-
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+
+  const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
   return (
     <div className="container">
