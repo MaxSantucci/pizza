@@ -9,22 +9,21 @@ const Search = () => {
   const { setSearchValue } = useContext(SearchContext);
   const inputRef = useRef();
 
+  const updateSearchValue = useCallback(
+    debounce((str) => {
+      setSearchValue(str)
+    }, 250),[]);
+
   const onClickClear = () => {
     setSearchValue("");
     setValue("");
     inputRef.current.focus();
   }
 
-  const updateSearchValue = useCallback(
-    debounce((str) => {
-      setSearchValue(str)
-    }, 250),
-    [],
-  );
-
   const onChangeInput = event => {
-    setValue(event.target.value);
-    updateSearchValue(event.target.value);
+    const searchInput = event.target.value
+    setValue(searchInput);
+    updateSearchValue(searchInput);
   }
 
   return (
