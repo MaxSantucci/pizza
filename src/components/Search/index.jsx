@@ -21,8 +21,9 @@ const Search = () => {
   }
 
   const onChangeInput = event => {
-    setValue(event.target.value);
-    updateSearchValue(event.target.value);
+    const searchInput = event.target.value
+    setValue(searchInput);
+    updateSearchValue(searchInput);
   }
 
   return (
