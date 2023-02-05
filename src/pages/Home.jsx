@@ -50,44 +50,47 @@ const Home = () => {
       });
   }
 
+   // If the parameters changed and there was a first render
   useEffect(() => {
-    if(isMounted.current) {
+    if (isMounted.current) {
       const queryString = qs.stringify({
         sortProperty: sort.sortProperty,
         categoryId,
-        currentPage
-      })
-  
+        currentPage,
+      });
+
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
   }, [categoryId, sort.sortProperty, currentPage]);
 
+  // If there was a first render, then we check the URL-parameters and save in redux
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
 
-      const sort = sortList.find(obj => obj.sortProperty === params.sort)
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
 
       dispatch(
         setFilters({
           ...params,
           sort,
-        })
-      )
+        }),
+      );
       isSearch.current = true;
     }
-  })
+  }, []);
 
+  // If was a first render, then we request pizza 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
 
-    if(isSearch.current) {
+    if (!isSearch.current) {
       fetchPizzas();
     }
 
     isSearch.current = false;
-  }, [categoryId, sort.sortProperty, searchValue, currentPage])
+  }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
