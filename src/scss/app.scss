@@ -334,12 +334,13 @@ body {
 
   &--empty {
     margin: 0 auto;
-    width: 560px;
+    width: 620px;
     text-align: center;
 
     h2 {
       font-size: 32px;
-      margin-bottom: 10px;
+      font-weight: 700;
+      margin-bottom: 15px;
     }
 
     p {

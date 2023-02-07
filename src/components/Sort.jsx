@@ -27,14 +27,14 @@ const Sort = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.path.includes(sortRef.current)) {
+      if (!sortRef.current.contains(event.target)) {
         setOpen(false)
       }
     }
 
-    document.body.addEventListener("click", handleClickOutside)
+    document.addEventListener("click", handleClickOutside)
 
-    return () => document.body.removeEventListener("click", handleClickOutside)
+    return () => document.removeEventListener("click", handleClickOutside)
   }, []);
 
   return (
