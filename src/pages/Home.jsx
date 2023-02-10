@@ -11,6 +11,7 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Sort, { sortList } from '../components/Sort';
 import { SearchContext } from '../App';
+import { setItems, fetchPizzas } from '../redux/slices/pizzaSlice';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -18,10 +19,10 @@ const Home = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
+  const items = useSelector((state) => state.pizza.items);
   const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
 
   const { searchValue } = useContext(SearchContext);
-  const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const onClickCategory = (id) => {
@@ -32,7 +33,7 @@ const Home = () => {
     dispatch(setCurrentPage(number));
   }
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
 
     const sortBy = sort.sortProperty.replace('-', '');
@@ -40,17 +41,20 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    axios
-      .get(
-        `https://63cc509f9b72d2a88e0b89c8.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      )
-      .then(res => {
-        setItems(res.data);
-        setIsLoading(false)
-      });
+    try {
+      
+      dispatch(setItems(data));
+    } catch (error) {
+      console.log("ERROR", error);
+      console.log("Mistake get pizzas");
+    } finally {
+      setIsLoading(false);
+    }
+
+    window.scrollTo(0, 0);
   }
 
-   // If the parameters changed and there was a first render
+  // If the parameters changed and there was a first render
   useEffect(() => {
     if (isMounted.current) {
       const queryString = qs.stringify({
@@ -83,8 +87,6 @@ const Home = () => {
 
   // If was a first render, then we request pizza 
   useEffect(() => {
-    window.scrollTo(0, 0);
-
     if (!isSearch.current) {
       fetchPizzas();
     }

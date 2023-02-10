@@ -1,17 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
 import { addItem } from '../../redux/slices/cartSlice';
 
-const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
+const PizzaBlock = ({ id, title, price_26, price_30, price_40, imageUrl, sizes, types }) => {
   const dispatch = useDispatch();
   const cartItem = useSelector(state => state.cart.items.find(obj => obj.id === id));
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
+  const [price, setPrice] = useState(price_26);
+
+  useEffect(() => {
+    if (activeSize === 0) {
+      setPrice(price_26);
+    } else if (activeSize === 1) {
+      setPrice(price_30);
+    } else if (activeSize === 2) {
+      setPrice(price_40);
+    }
+  }, [activeSize, price_26, price_30, price_40]);
+
+  
 
   const addedCount = cartItem ? cartItem.count : 0;
 
+  console.log(addedCount)
+
   const typePizza = ['thin', "traditional"];
+
 
   const onClickAdd = () => {
     const item = {
@@ -77,5 +93,7 @@ const PizzaBlock = ({ id, title, price, imageUrl, sizes, types }) => {
     </div>
   );
 };
+
+
 
 export default PizzaBlock;

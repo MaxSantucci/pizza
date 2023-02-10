@@ -5,12 +5,19 @@ const initialState = {
   items: [],
 }
 
+function updateTotalPrice(state) {
+  state.totalPrice = state.items.reduce((sum, obj) => {
+    return obj.price * obj.count + sum;
+  }, 0);
+}
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
     addItem(state, action) {
-      const findItem = state.items.find(obj => obj.id === action.payload.id);
+      const {id, type, size} = action.payload;
+      const findItem = state.items.find(obj => obj.id === id && obj.type === type && obj.size === size);
 
       if (findItem) {
         findItem.count++;
@@ -20,13 +27,11 @@ const cartSlice = createSlice({
           count: 1,
         })
       }
-
-      state.totalPrice = state.items.reduce((sum, obj) => {
-        return obj.price * obj.count + sum;
-      }, 0);
+      updateTotalPrice(state)
     },
     minusItem(state, action) {
-      const findItem = state.items.find(obj => obj.id === action.payload);
+      const {id, type, size} = action.payload;
+      const findItem = state.items.find(obj => obj.id === id && obj.type === type && obj.size === size);
 
       if (findItem) {
         findItem.count--;
@@ -36,9 +41,13 @@ const cartSlice = createSlice({
         const index = state.items.indexOf(findItem);
         state.items.splice(index, 1)
       }
+
+      updateTotalPrice(state)
     },
     removeItem(state, action) {
       state.items = state.items.filter(obj => obj.id !== action.payload);
+
+      updateTotalPrice(state)
     },
     clearItem(state) {
       state.items = [];

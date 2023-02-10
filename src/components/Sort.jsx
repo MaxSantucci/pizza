@@ -4,11 +4,15 @@ import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../redux/slices/fiterSlice';
 
+// get price() {
+//   return ["price_${selectedSize}"];
+// }
+
 export const sortList = [
   { name: "popularity(DESC)", sortProperty: "rating" },
   { name: "popularity(ASC)", sortProperty: "-rating" },
-  { name: 'price(DESC)', sortProperty: "price" },
-  { name: 'price(ASC)', sortProperty: "-price" },
+  { name: 'price(DESC)', sortProperty: "price_26"},
+  { name: 'price(ASC)', sortProperty: "-price_26"},
   { name: "alphabet(DESC)", sortProperty: "title" },
   { name: "alphabet(ASC)", sortProperty: "-title" }
 ]

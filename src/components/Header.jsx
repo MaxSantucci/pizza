@@ -10,8 +10,6 @@ const Header = () => {
 
   const totalCount = items.reduce((sum, item) => sum + item.count, 0)
 
-  console.log(totalPrice)
-
   return (
     <div className="header">
       <div className="container">
