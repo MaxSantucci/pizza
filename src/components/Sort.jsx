@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSort } from '../redux/slices/fiterSlice';
-
-// get price() {
-//   return ["price_${selectedSize}"];
-// }
+import { selectSort, setSort } from '../redux/slices/fiterSlice';
 
 export const sortList = [
   { name: "popularity(DESC)", sortProperty: "rating" },
@@ -19,7 +15,7 @@ export const sortList = [
 
 const Sort = () => {
   const dispatch = useDispatch();
-  const sort = useSelector(state => state.filter.sort)
+  const sort = useSelector(selectSort);
   const sortRef = useRef();
 
   const [open, setOpen] = useState(false);

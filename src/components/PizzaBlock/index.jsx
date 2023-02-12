@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 
-import { addItem } from '../../redux/slices/cartSlice';
+import { addItem, selectCartItem } from '../../redux/slices/cartSlice';
 
 const PizzaBlock = ({ id, title, price_26, price_30, price_40, imageUrl, sizes, types }) => {
   const dispatch = useDispatch();
-  const cartItem = useSelector(state => state.cart.items.find(obj => obj.id === id));
+  // const cartItem = useSelector(state => state.cart.items.find(obj => obj.id === id));
+  const cartItem = useSelector(selectCartItem)
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
   const [price, setPrice] = useState(price_26);
@@ -20,14 +21,18 @@ const PizzaBlock = ({ id, title, price_26, price_30, price_40, imageUrl, sizes, 
     }
   }, [activeSize, price_26, price_30, price_40]);
 
-  
-
-  const addedCount = cartItem ? cartItem.count : 0;
-
-  console.log(addedCount)
+  // const addedCount = cartItem ? cartItem.count : 0;
 
   const typePizza = ['thin', "traditional"];
 
+  const addedCount = cartItem.reduce((acc, item) => {
+    if (item.id === id && item.type === typePizza[activeType] && item.size === sizes[activeSize]) {
+      return acc + item.count;
+    }
+    return acc;
+  }, 0);
+
+  console.log(addedCount)
 
   const onClickAdd = () => {
     const item = {
@@ -36,7 +41,7 @@ const PizzaBlock = ({ id, title, price_26, price_30, price_40, imageUrl, sizes, 
       price,
       imageUrl,
       type: typePizza[activeType],
-      size: sizes[activeSize],
+      size: sizes[activeSize]
     }
     dispatch(addItem(item));
   }
