@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef} from 'react';
+import { useEffect, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import qs from "qs";
 import { useNavigate } from 'react-router-dom';
@@ -84,7 +84,9 @@ const Home = () => {
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
-  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const pizzas = items.map((obj) => (
+      <PizzaBlock key={obj.id} {...obj} />
+  ));
 
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
