@@ -12,7 +12,7 @@ import Sort, { sortList } from '../components/Sort';
 
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
 
-const Home = () => {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSearch = useRef(false);
@@ -21,12 +21,12 @@ const Home = () => {
   const { items, status } = useSelector(selectPizzaData);
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
 
-  const onClickCategory = (id) => {
-    dispatch(setCategoryId(id));
+  const onClickCategory = (index: number) => {
+    dispatch(setCategoryId(index));
   }
 
-  const onChangePage = number => {
-    dispatch(setCurrentPage(number));
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
   }
 
   const getPizzas = async () => {
@@ -35,13 +35,16 @@ const Home = () => {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    dispatch(fetchPizzas({
+    dispatch(
+      //@ts-ignore
+      fetchPizzas({
       sortBy,
       order,
       category,
       search,
       currentPage,
-    }));
+      })
+    );
 
     window.scrollTo(0, 0);
   }
@@ -84,7 +87,7 @@ const Home = () => {
     isSearch.current = false;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
-  const pizzas = items.map((obj) => (
+  const pizzas = items.map((obj: any) => (
       <PizzaBlock key={obj.id} {...obj} />
   ));
 

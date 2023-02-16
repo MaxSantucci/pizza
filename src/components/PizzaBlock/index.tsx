@@ -4,12 +4,23 @@ import { Link } from 'react-router-dom';
 
 import { addItem, selectCartItem } from '../../redux/slices/cartSlice';
 
-const PizzaBlock = ({ id, title, price_26, price_30, price_40, imageUrl, sizes, types }) => {
+type PizzaBlockProps = {
+  id: string;
+  title: string;
+  price_26: number;
+  price_30: number; 
+  price_40: number; 
+  imageUrl: string; 
+  sizes: number[]; 
+  types: number[];
+}
+
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ id, title, price_26, price_30, price_40, imageUrl, sizes, types }) => {
   const dispatch = useDispatch();
   // const cartItem = useSelector(state => state.cart.items.find(obj => obj.id === id));
   const cartItem = useSelector(selectCartItem)
-  const [activeType, setActiveType] = useState(0);
-  const [activeSize, setActiveSize] = useState(0);
+  const [activeType, setActiveType] = useState<number>(0);
+  const [activeSize, setActiveSize] = useState<number>(0);
   const [price, setPrice] = useState(price_26);
 
   useEffect(() => {
@@ -26,7 +37,7 @@ const PizzaBlock = ({ id, title, price_26, price_30, price_40, imageUrl, sizes, 
 
   const typePizza = ['thin', "traditional"];
 
-  const addedCount = cartItem.reduce((acc, item) => {
+  const addedCount = cartItem.reduce((acc: number, item: any) => {
     if (item.id === id && item.type === typePizza[activeType] && item.size === sizes[activeSize]) {
       return acc + item.count;
     }

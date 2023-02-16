@@ -4,7 +4,12 @@ import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectSort, setSort } from '../redux/slices/fiterSlice';
 
-export const sortList = [
+type SortItem = {
+  name: string;
+  sortProperty: string;
+};
+
+export const sortList: SortItem[] = [
   { name: "popularity(DESC)", sortProperty: "rating" },
   { name: "popularity(ASC)", sortProperty: "-rating" },
   { name: 'price(DESC)', sortProperty: "price_26"},
@@ -16,18 +21,18 @@ export const sortList = [
 const Sort = () => {
   const dispatch = useDispatch();
   const sort = useSelector(selectSort);
-  const sortRef = useRef();
+  const sortRef = useRef<HTMLDivElement>(null);
 
   const [open, setOpen] = useState(false);
 
-  const onClickListItem = (obj) => {
+  const onClickListItem = (obj: SortItem) => {
     dispatch(setSort(obj));
     setOpen(false);
   }
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!sortRef.current.contains(event.target)) {
+    const handleClickOutside = (event: any) => {
+      if (!sortRef.current?.contains(event.target)) {
         setOpen(false)
       }
     }
