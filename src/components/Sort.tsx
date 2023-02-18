@@ -31,13 +31,13 @@ const Sort = () => {
   }
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (!sortRef.current?.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!sortRef.current?.contains(event.target as Node)) {
         setOpen(false)
       }
     }
 
-    document.addEventListener("click", handleClickOutside)
+    document.body.addEventListener("click", handleClickOutside)
 
     return () => document.removeEventListener("click", handleClickOutside)
   }, []);
