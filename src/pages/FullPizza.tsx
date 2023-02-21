@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import styles from "./FullPizza.module.scss";
+import styles from "../scss/components/FullPizza.module.scss";
 
 const FullPizza: React.FC = () => {
   const [pizza, setPizza] = useState<{
@@ -40,7 +40,7 @@ const FullPizza: React.FC = () => {
       <div className={styles.content}>
         <h2 className={styles.title}>{pizza.title}</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur, voluptas! Inventore debitis aliquid at labore eaque adipisci dolorem. Autem, qui placeat. Quibusdam perferendis a placeat asperiores aliquam obcaecati cumque quos!</p>
-        <h4>from {pizza.price_26} $</h4>
+        <h4 className={styles.price}>from {pizza.price_26} $</h4>
       </div>
      </div>
     </div>

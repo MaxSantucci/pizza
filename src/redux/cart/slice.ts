@@ -1,32 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { WritableDraft } from 'immer/dist/internal';
-import { RootState } from '../store';
+import { getCartFromLS } from '../../utils/getCartFromLS';
+import { updateTotalPrice } from '../../utils/updateTotalPrice';
+import { CartSliceState, CartItem } from './types';
 
-export interface CartItem {
-  id: string;
-  title: string;
-  price: number;
-  imageUrl: string;
-  type: string;
-  size: number;
-  count: number;
-}
 
-interface CartSliceState {
-  totalPrice: number;
-  items: CartItem[];
-}
-
-const initialState: CartSliceState = {
-  totalPrice: 0,
-  items: [],
-}
-
-function updateTotalPrice(state: WritableDraft<CartSliceState>) {
-  state.totalPrice = state.items.reduce((sum, obj) => {
-    return obj.price * obj.count + sum;
-  }, 0);
-}
+const initialState: CartSliceState = getCartFromLS();
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -44,7 +22,8 @@ const cartSlice = createSlice({
           count: 1,
         })
       }
-      updateTotalPrice(state)
+
+      state.totalPrice = updateTotalPrice(state.items)
     },
     minusItem(state, action: PayloadAction<CartItem>) {
       const { id, type, size } = action.payload;
@@ -59,7 +38,7 @@ const cartSlice = createSlice({
         state.items.splice(index, 1)
       }
 
-      updateTotalPrice(state)
+      state.totalPrice = updateTotalPrice(state.items)
     },
     removeItem(state, action: PayloadAction<CartItem>) {
       const {id, type, size} = action.payload;
@@ -70,19 +49,14 @@ const cartSlice = createSlice({
         state.items.splice(index, 1);
       }
 
-      updateTotalPrice(state)
+      state.totalPrice =  updateTotalPrice(state.items)
     },
     clearItem(state) {
       state.items = [];
-      state.totalPrice = 0;
+      state.totalPrice = 0; 
     },
   }
 })
-
-
-
-export const selectCart = (state: RootState) => state.cart;
-export const selectCartItem = (state: RootState) => state.cart.items;
 
 export const { addItem, removeItem, minusItem, clearItem } = cartSlice.actions;
 

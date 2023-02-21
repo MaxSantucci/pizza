@@ -2,25 +2,30 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectSort, setSort } from '../redux/slices/fiterSlice';
+import { setSort } from '../redux/filter/slice';
+import { Sort, SortPropertyEnum } from '../redux/filter/types';
 
-type SortItem = {
+
+interface SortItem {
   name: string;
-  sortProperty: string;
+  sortProperty: SortPropertyEnum;
 };
 
+interface SortPopupProps {
+  value: Sort;
+}
+
 export const sortList: SortItem[] = [
-  { name: "popularity(DESC)", sortProperty: "rating" },
-  { name: "popularity(ASC)", sortProperty: "-rating" },
-  { name: 'price(DESC)', sortProperty: "price_26"},
-  { name: 'price(ASC)', sortProperty: "-price_26"},
-  { name: "alphabet(DESC)", sortProperty: "title" },
-  { name: "alphabet(ASC)", sortProperty: "-title" }
+  { name: "popularity(DESC)", sortProperty: SortPropertyEnum.RATING_DESC },
+  { name: "popularity(ASC)", sortProperty: SortPropertyEnum.RATING_ASC },
+  { name: 'price(DESC)', sortProperty:  SortPropertyEnum.PRICE_DESC},
+  { name: 'price(ASC)', sortProperty: SortPropertyEnum.PRICE_ASC},
+  { name: "alphabet(DESC)", sortProperty: SortPropertyEnum.TITLE_DESC },
+  { name: "alphabet(ASC)", sortProperty: SortPropertyEnum.TITLE_ASC  }
 ]
 
-const Sort = () => {
+const SortPopup: React.FC<SortPopupProps> = React.memo(({ value }) => {
   const dispatch = useDispatch();
-  const sort = useSelector(selectSort);
   const sortRef = useRef<HTMLDivElement>(null);
 
   const [open, setOpen] = useState(false);
@@ -58,7 +63,7 @@ const Sort = () => {
           />
         </svg>
         <b>Sort by:</b>
-        <span onClick={() => setOpen(!open)}>{sort.name}</span>
+        <span onClick={() => setOpen(!open)}>{value.name}</span>
       </div>
       {open && (
         <div className="sort__popup">
@@ -67,7 +72,7 @@ const Sort = () => {
               <li
                 key={i}
                 onClick={() => onClickListItem(obj)}
-                className={sort.sortProperty === obj.sortProperty ? "active" : ""}
+                className={value.sortProperty === obj.sortProperty ? "active" : ""}
               >
                 {obj.name}
               </li>
@@ -77,6 +82,6 @@ const Sort = () => {
       )}
     </div>
   );
-};
+});
 
-export default Sort;
+export default SortPopup;
