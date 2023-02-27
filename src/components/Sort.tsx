@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../redux/filter/slice';
-import { Sort, SortPropertyEnum } from '../redux/filter/types';
+import { SortType, SortPropertyEnum } from '../redux/filter/types';
 
 
 interface SortItem {
@@ -12,7 +12,7 @@ interface SortItem {
 };
 
 interface SortPopupProps {
-  value: Sort;
+  value: SortType;
 }
 
 export const sortList: SortItem[] = [
@@ -24,7 +24,7 @@ export const sortList: SortItem[] = [
   { name: "alphabet(ASC)", sortProperty: SortPropertyEnum.TITLE_ASC  }
 ]
 
-const SortPopup: React.FC<SortPopupProps> = React.memo(({ value }) => {
+export const Sort: React.FC<SortPopupProps> = React.memo(({ value }) => {
   const dispatch = useDispatch();
   const sortRef = useRef<HTMLDivElement>(null);
 
@@ -84,4 +84,3 @@ const SortPopup: React.FC<SortPopupProps> = React.memo(({ value }) => {
   );
 });
 
-export default SortPopup;

@@ -7,7 +7,7 @@ export enum SortPropertyEnum {
   PRICE_ASC = '-price_26',
 }
 
-export interface Sort {
+export interface SortType {
   name: string;
   sortProperty: SortPropertyEnum; 
 } 
@@ -16,5 +16,5 @@ export interface FilterSliceState {
   searchValue : string;
   categoryId: number;
   currentPage: number;
-  sort: Sort;
+  sort: SortType;
 }
