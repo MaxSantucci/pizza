@@ -1,11 +1,7 @@
-import { useCallback, useEffect, useRef} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import qs from "qs";
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect} from 'react';
+import { useSelector } from 'react-redux';
 
 import { Categories, Pagination, PizzaBlock, Skeleton, Sort } from '../components';
-
-import { sortList } from '../components/Sort';
 
 import { useAppDispatch } from '../redux/store';
 import { selectFilter } from '../redux/filter/selector';
@@ -15,9 +11,6 @@ import { selectPizzaData } from '../redux/pizza/selector';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
-  // const isSearch = useRef(false);
-  // const isMounted = useRef(false);
 
   const { items, status } = useSelector(selectPizzaData);
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
@@ -82,8 +75,7 @@ const Home: React.FC = () => {
 
   // If was a first render, then we request pizza 
   useEffect(() => {
-    getPizzas();
-    // isSearch.current = false;
+    getPizzas().then(r => r);
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   const pizzas = items.map((obj: any) => (

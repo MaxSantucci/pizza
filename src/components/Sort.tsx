@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setSort } from '../redux/filter/slice';
 import { SortType, SortPropertyEnum } from '../redux/filter/types';
-
 
 interface SortItem {
   name: string;
   sortProperty: SortPropertyEnum;
-};
+}
 
 interface SortPopupProps {
   value: SortType;
